@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Picken-Glish Kids 🐔</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --azul: #2989d8;
+    --azul-oscuro: #1e5799;
+    --verde: #27ae60;
+    --amarillo: #f39c12;
+    --rojo: #e74c3c;
+    --rosa: #ff6b9d;
+    --morado: #9b59b6;
+    --gris: #f4f7fa;
+    --texto: #2c3e50;
+  }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--gris);
+    color: var(--texto);
+    display: flex;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ============ SIDEBAR ============ */
+  .sidebar {
+    width: 280px;
+    background: linear-gradient(180deg, #1e5799 0%, #154360 100%);
+    color: white;
+    padding: 25px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    position: fixed;
+    height: 100vh;
+    box-shadow: 6px 0 30px rgba(0,0,0,0.2);
+    z-index: 100;
+    overflow-y: auto;
+  }
+
+  .sidebar::-webkit-scrollbar { width: 6px; }
+  .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
+
+  .logo {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 25px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 16px;
+    letter-spacing: 0.5px;
+  }
+
+  .logo-emoji {
+    font-size: 2rem;
+    animation: wobble 2s ease-in-out infinite;
+  }
+
+  @keyframes wobble {
+    0%, 100% { transform: rotate(-8deg); }
+    50% { transform: rotate(8deg); }
+  }
+
+  .sidebar-section-title {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    opacity: 0.5;
+    padding: 15px 15px 5px;
+    font-weight: 700;
+  }
+
+  .sidebar-item {
+    padding: 13px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.85);
+    font-size: 0.92rem;
+    border: none;
+    background: none;
+    text-align: left;
+    width: 100%;
+  }
+
+  .sidebar-item:hover {
+    background: rgba(255,255,255,0.12);
+    color: white;
+    transform: translateX(5px);
+  }
+
+  .sidebar-item.active {
+    background: white;
+    color: var(--azul-oscuro);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+  }
+
+  .sidebar-item .icon { font-size: 1.3rem; }
+
+  /* ============ MAIN ============ */
+  .main {
+    margin-left: 280px;
+    flex: 1;
+    min-height: 100vh;
+  }
+
+  /* ============ TOPBAR ============ */
+  .topbar {
+    background: white;
+    padding: 18px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .topbar-info h1 {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.6rem;
+    color: var(--azul-oscuro);
+    font-weight: 800;
+  }
+
+  .topbar-info p {
+    font-size: 0.85rem;
+    color: #7f8c8d;
+    margin-top: 2px;
+  }
+
+  .topbar-stats {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .stat-pill {
+    background: linear-gradient(135deg, #fff5e6, #ffe8cc);
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-weight: 800;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--amarillo);
+    border: 2px solid #ffd699;
+  }
+
+  .stat-pill.verde {
+    background: linear-gradient(135deg, #e6f9ed, #c8f0d6);
+    color: var(--verde);
+    border-color: #a3e4b8;
+  }
+
+  .stat-pill.rosa {
+    background: linear-gradient(135deg, #ffe6ef, #ffcce0);
+    color: var(--rosa);
+    border-color: #ffa8c8;
+  }
+
+  /* ============ CONTENIDO ============ */
+  .contenido {
+    padding: 30px 40px 60px;
+  }
+
+  /* ============ GRID UNIDADES ============ */
+  .grid-unidades {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 22px;
+    margin-top: 10px;
+  }
+
+  .unidad-card {
+    background: white;
+    border-radius: 22px;
+    padding: 26px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 20px rgba(30,87,153,0.08);
+    border: 3px solid transparent;
+  }
+
+  .unidad-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 8px;
+    background: linear-gradient(90deg, var(--azul), var(--verde));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s;
+  }
+
+  .unidad-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 22px 45px rgba(30,87,153,0.18);
+    border-color: var(--azul);
+  }
+
+  .unidad-card:hover::before { transform: scaleX(1); }
+
+  .unidad-icon {
+    font-size: 3.5rem;
+    margin-bottom: 14px;
+    display: block;
+    line-height: 1;
+  }
+
+  .unidad-card h3 {
+    font-family: 'Baloo 2', cursive;
+    color: var(--azul-oscuro);
+    font-size: 1.35rem;
+    margin-bottom: 6px;
+    font-weight: 800;
+  }
+
+  .unidad-card .num {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #95a5a6;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+
+  .unidad-card p {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 14px;
+  }
+
+  .unidad-badge {
+    display: inline-block;
+    padding: 5px 14px;
+    background: #e8f4fd;
+    color: var(--azul);
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .unidad-badge.completada { background: #d5f4e6; color: var(--verde); }
+  .unidad-badge.progreso { background: #fff3cd; color: #d68910; }
+
+  /* ============ VISTA DE UNIDAD (LECCIÓN) ============ */
+  .vista-unidad { display: none; }
+  .vista-unidad.activa { display: block; animation: fadeUp 0.4s ease; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .volver-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    border: 2px solid #e1ecf7;
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--azul-oscuro);
+    margin-bottom: 22px;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+
+  .volver-btn:hover {
+    background: var(--azul);
+    color: white;
+    border-color: var(--azul);
+    transform: translateX(-3px);
+  }
+
+  /* TABS DE ACTIVIDADES */
+  .tabs-actividades {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    background: white;
+    padding: 8px;
+    border-radius: 18px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.06);
+  }
+
+  .tab-btn {
+    padding: 10px 20px;
+    border-radius: 12px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-weight: 700;
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    transition: all 0.25s;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover { background: #f4f7fa; color: var(--azul); }
+
+  .tab-btn.active {
+    background: linear-gradient(135deg, var(--azul), var(--azul-oscuro));
+    color: white;
+    box-shadow: 0 4px 15px rgba(41,137,216,0.35);
+  }
+
+  .panel-actividad { display: none; }
+  .panel-actividad.activa { display: block; animation: fadeUp 0.35s ease; }
+
+  /* VOCABULARIO - TARJETAS */
+  .grid-vocab {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+  }
+
+  .vocab-card {
+    background: white;
+    border-radius: 18px;
+    padding: 20px 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 3px solid #f0f4f8;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .vocab-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    border-color: var(--azul);
+    box-shadow: 0 15px 35px rgba(41,137,216,0.2);
+  }
+
+  .vocab-card .vocab-emoji {
+    font-size: 3.5rem;
+    display: block;
+    margin-bottom: 10px;
+    line-height: 1;
+    transition: transform 0.3s;
+  }
+
+  .vocab-card:hover .vocab-emoji { transform: scale(1.15) rotate(-5deg); }
+
+  .vocab-card .vocab-palabra {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--azul-oscuro);
+    margin-bottom: 3px;
+  }
+
+  .vocab-card .vocab-traduccion {
+    font-size: 0.85rem;
+    color: #95a5a6;
+    font-weight: 600;
+  }
+
+  .audio-indicator {
+    position: absolute;
+    top: 10px; right: 10px;
+    width: 28px; height: 28px;
+    background: var(--azul);
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .vocab-card:hover .audio-indicator { opacity: 1; }
+
+  /* GRAMÁTICA */
+  .grammar-box {
+    background: white;
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    margin-bottom: 20px;
+    border-left: 6px solid var(--amarillo);
+  }
+
+  .grammar-box h3 {
+    font-family: 'Baloo 2', cursive;
+    color: var(--amarillo);
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .grammar-ejemplo {
+    background: #fffbee;
+    padding: 15px 20px;
+    border-radius: 12px;
+    margin: 10px 0;
+    font-size: 1rem;
+    border-left: 4px solid var(--amarillo);
+  }
+
+  .grammar-ejemplo .en {
+    font-weight: 800;
+    color: var(--azul-oscuro);
+    font-size: 1.1rem;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .grammar-ejemplo .es {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    font-style: italic;
+  }
+
+  /* EJERCICIOS */
+  .ejercicio-box {
+    background: white;
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    margin-bottom: 20px;
+  }
+
+  .ejercicio-pregunta {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.25rem;
+    color: var(--azul-oscuro);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 800;
+  }
+
+  .opciones-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+  }
+
+  .opcion-btn {
+    padding: 18px 12px;
+    border: 3px solid #e1ecf7;
+    background: white;
+    border-radius: 14px;
+    cursor: pointer;
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--texto);
+    transition: all 0.25s;
+    font-family: inherit;
+    position: relative;
+  }
+
+  .opcion-btn:hover:not(:disabled) {
+    border-color: var(--azul);
+    color: var(--azul);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(41,137,216,0.15);
+  }
+
+  .opcion-btn.correcta {
+    background: #d5f4e6;
+    border-color: var(--verde);
+    color: var(--verde);
+  }
+
+  .opcion-btn.incorrecta {
+    background: #fde2e2;
+    border-color: var(--rojo);
+    color: var(--rojo);
+  }
+
+  .opcion-btn:disabled { cursor: not-allowed; }
+
+  .feedback {
+    margin-top: 15px;
+    padding: 12px 18px;
+    border-radius: 12px;
+    font-weight: 700;
+    display: none;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .feedback.show { display: flex; animation: fadeUp 0.3s; }
+  .feedback.ok { background: #d5f4e6; color: var(--verde); }
+  .feedback.err { background: #fde2e2; color: var(--rojo); }
+
+  /* LISTENING */
+  .listening-box {
+    background: linear-gradient(135deg, #f8fbff, #eaf4ff);
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    margin-bottom: 20px;
+    border: 3px dashed #c5dff5;
+  }
+
+  .listening-icon {
+    font-size: 4rem;
+    margin-bottom: 15px;
+    display: block;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+
+  .listening-icon:hover { transform: scale(1.1); }
+
+  .listening-box h3 {
+    font-family: 'Baloo 2', cursive;
+    color: var(--azul-oscuro);
+    margin-bottom: 8px;
+    font-size: 1.3rem;
+  }
+
+  .listening-box p { color: #7f8c8d; font-size: 0.9rem; margin-bottom: 18px; }
+
+  .play-btn {
+    background: linear-gradient(135deg, var(--verde), #1e8449);
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 25px;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 6px 0 #1e8449;
+    transition: all 0.15s;
+    font-family: inherit;
+  }
+
+  .play-btn:hover { background: #2ecc71; }
+  .play-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #1e8449; }
+
+  /* READING */
+  .reading-box {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    line-height: 1.8;
+    font-size: 1.05rem;
+    color: #34495e;
+  }
+
+  .reading-box h3 {
+    font-family: 'Baloo 2', cursive;
+    color: var(--azul-oscuro);
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+  }
+
+  .reading-box .highlight {
+    background: #fff3cd;
+    padding: 2px 6px;
+    border-radius: 5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .reading-box .highlight:hover { background: #ffe8a1; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .sidebar { width: 220px; }
+    .main { margin-left: 220px; }
+    .contenido { padding: 20px; }
+    .topbar { padding: 15px 20px; }
+  }
+
+  @media (max-width: 700px) {
+    body { flex-direction: column; }
+    .sidebar {
+      position: relative;
+      width: 100%;
+      height: auto;
+      flex-direction: row;
+      overflow-x: auto;
+      padding: 12px;
+      gap: 8px;
+    }
+    .sidebar .logo { margin-bottom: 0; padding: 8px 12px; font-size: 1rem; white-space: nowrap; }
+    .sidebar-section-title { display: none; }
+    .sidebar-item { white-space: nowrap; padding: 10px 14px; font-size: 0.85rem; }
+    .main { margin-left: 0; }
+    .topbar { flex-direction: column; gap: 10px; align-items: flex-start; }
+    .topbar-info h1 { font-size: 1.3rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ SIDEBAR ============ -->
+<aside class="sidebar">
+  <div class="logo">
+    <span class="logo-emoji">🐔</span>
+    <span>Picken-Glish<br><small style="font-size:0.65rem;opacity:0.7;">KIDS</small></span>
+  </div>
+
+  <button class="sidebar-item active" onclick="mostrarInicio(this)">
+    <span class="icon">🏠</span> Inicio
+  </button>
+
+  <div class="sidebar-section-title">Unidades</div>
+
+  <button class="sidebar-item" onclick="abrirUnidad(0, this)">
+    <span class="icon">👋</span> Unit 0 · Welcome
+  </button>
+  <button class="sidebar-item" onclick="abrirUnidad(1, this)">
+    <span class="icon">🏫</span> Unit 1 · My Classroom
+  </button>
+  <button class="sidebar-item" onclick="abrirUnidad(2, this)">
+    <span class="icon">🌍</span> Unit 2 · My World
+  </button>
+  <button class="sidebar-item" onclick="abrirUnidad(3, this)">
+    <span class="icon">👨‍👩‍👧</span> Unit 3 · My Family
+  </button>
+  <button class="sidebar-item" onclick="abrirUnidad(4, this)">
+    <span class="icon">🏠</span> Unit 4 · My House
+  </button>
+  <button class="sidebar-item" onclick="abrirUnidad(5, this)">
+    <span class="icon">👕</span> Unit 5 · Cool Clothes
+  </button>
+  <button class="sidebar-item" onclick="abrirUnidad(6, this)">
+    <span class="icon">🧸</span> Unit 6 · My Toys
+  </button>
+  <button class="sidebar-item" onclick="abrirUnidad(7, this)">
+    <span class="icon">🦵</span> Unit 7 · My Body
+  </button>
+  <button class="sidebar-item" onclick="abrirUnidad(8, this)">
+    <span class="icon">🍎</span> Unit 8 · Good Food
+  </button>
+  <button class="sidebar-item" onclick="abrirUnidad(9, this)">
+    <span class="icon">🐾</span> Unit 9 · Animal Friends
+  </button>
+</aside>
+
+<!-- ============ MAIN ============ -->
+<main class="main">
+  <header class="topbar">
+    <div class="topbar-info">
+      <h1 id="tituloTop">¡Hola, pequeño explorador! 🌟</h1>
+      <p id="subtituloTop">Aprende inglés jugando con Picken-Glish Kids</p>
+    </div>
+    <div class="topbar-stats">
+      <div class="stat-pill">⭐ <span id="xp">0</span> XP</div>
+      <div class="stat-pill verde">🔥 <span id="racha">1</span> días</div>
+      <div class="stat-pill rosa">🏆 <span id="nivel">1</span></div>
+    </div>
+  </header>
+
+  <div class="contenido">
+
+    <!-- ============ VISTA INICIO ============ -->
+    <div id="vistaInicio" class="vista-unidad activa">
+      <h2 style="font-family:'Baloo 2';color:var(--azul-oscuro);margin-bottom:8px;font-size:1.8rem;">📚 Elige una unidad</h2>
+      <p style="color:#7f8c8d;margin-bottom:25px;">Aprende vocabulario, gramática, listening y reading paso a paso.</p>
+
+      <div class="grid-unidades" id="gridUnidades"></div>
+    </div>
+
+    <!-- ============ VISTA UNIDAD (se llena dinámicamente) ============ -->
+    <div id="vistaUnidad" class="vista-unidad"></div>
+
+  </div>
+</main>
+
+<script>
+/* =====================================================
+   DATOS DE LAS UNIDADES (extraídos del libro Our World 1)
+   ===================================================== */
+const UNIDADES = [
+  {
+    id: 0,
+    titulo: "Welcome!",
+    emoji: "👋",
+    desc: "Saludos, colores, alfabeto, formas y números.",
+    color: "#9b59b6",
+    vocab: [
+      { emoji: "👋", en: "Hello", es: "Hola" },
+      { emoji: "🌅", en: "Good morning", es: "Buenos días" },
+      { emoji: "🌙", en: "Good night", es: "Buenas noches" },
+      { emoji: "🤚", en: "Goodbye", es: "Adiós" },
+      { emoji: "🔴", en: "Red", es: "Rojo" },
+      { emoji: "🔵", en: "Blue", es: "Azul" },
+      { emoji: "🟢", en: "Green", es: "Verde" },
+      { emoji: "🟡", en: "Yellow", es: "Amarillo" },
+      { emoji: "🟠", en: "Orange", es: "Naranja" },
+      { emoji: "⚫", en: "Black", es: "Negro" },
+      { emoji: "⚪", en: "White", es: "Blanco" },
+      { emoji: "🟪", en: "Purple", es: "Morado" },
+      { emoji: "🟥", en: "Square", es: "Cuadrado" },
+      { emoji: "🔺", en: "Triangle", es: "Triángulo" },
+      { emoji: "🟢", en: "Circle", es: "Círculo" },
+      { emoji: "🟪", en: "Rectangle", es: "Rectángulo" },
+      { emoji: "⭐", en: "Star", es: "Estrella" },
+      { emoji: "1️⃣", en: "One", es: "Uno" },
+      { emoji: "2️⃣", en: "Two", es: "Dos" },
+      { emoji: "3️⃣", en: "Three", es: "Tres" },
+      { emoji: "4️⃣", en: "Four", es: "Cuatro" },
+      { emoji: "5️⃣", en: "Five", es: "Cinco" },
+      { emoji: "6️⃣", en: "Six", es: "Seis" },
+      { emoji: "7️⃣", en: "Seven", es: "Siete" },
+      { emoji: "8️⃣", en: "Eight", es: "Ocho" },
+      { emoji: "9️⃣", en: "Nine", es: "Nueve" },
+      { emoji: "🔟", en: "Ten", es: "Diez" }
+    ],
+    grammar: [
+      { titulo: "What's your name?", en: "What's your name? — My name is Mía.", es: "¿Cómo te llamas? — Me llamo Mía." },
+      { titulo: "How old are you?", en: "How old are you? — I'm five.", es: "¿Cuántos años tienes? — Tengo cinco." },
+      { titulo: "What color is it?", en: "What color is it? — It's blue.", es: "¿De qué color es? — Es azul." }
+    ],
+    listening: "Hello! I'm Eddie the elephant. What's your name? Hi! My name is Mía. How old are you, Freddy? I'm five. How old are you, Polly? I'm seven. It's my birthday! Happy birthday!",
+    reading: {
+      titulo: "Welcome to Our World!",
+      texto: "Hello! I'm Eddie the elephant. This is Polly the parrot, Mía the monkey and Freddy the frog. We are friends. Look at the colors! Red, blue, green, yellow, orange, black and white. Count with us: one, two, three, four, five, six, seven, eight, nine, ten!"
+    },
+    ejercicios: [
+      { pregunta: "¿Cómo se dice 'Hola' en inglés?", opciones: ["Goodbye", "Hello", "Good night"], correcta: 1 },
+      { pregunta: "¿Cuál es el color 'Azul'?", opciones: ["Red", "Green", "Blue"], correcta: 2 },
+      { pregunta: "¿Cómo se dice 'Cinco'?", opciones: ["Three", "Five", "Nine"], correcta: 1 }
+    ]
+  },
+  {
+    id: 1,
+    titulo: "My Classroom",
+    emoji: "🏫",
+    desc: "Objetos del salón, colores y números.",
+    color: "#2989d8",
+    vocab: [
+      { emoji: "📚", en: "A book", es: "Un libro" },
+      { emoji: "✏️", en: "A pencil", es: "Un lápiz" },
+      { emoji: "🖍️", en: "A crayon", es: "Un crayón" },
+      { emoji: "🖊️", en: "A pen", es: "Un bolígrafo" },
+      { emoji: "🧽", en: "An eraser", es: "Un borrador" },
+      { emoji: "🪑", en: "A chair", es: "Una silla" },
+      { emoji: "🪑", en: "A desk", es: "Un escritorio" },
+      { emoji: "🪑", en: "A table", es: "Una mesa" },
+      { emoji: "📋", en: "A board", es: "Un pizarrón" },
+      { emoji: "💻", en: "A computer", es: "Una computadora" },
+      { emoji: "🕐", en: "A clock", es: "Un reloj" },
+      { emoji: "🗺️", en: "A map", es: "Un mapa" },
+      { emoji: "🖼️", en: "A picture", es: "Un cuadro" },
+      { emoji: "🏫", en: "A classroom", es: "Un salón de clases" }
+    ],
+    grammar: [
+      { titulo: "Is it a...?", en: "Is it a pencil? — Yes, it is. / No, it isn't.", es: "¿Es un lápiz? — Sí. / No." },
+      { titulo: "What is it?", en: "What is it? — It's a crayon.", es: "¿Qué es? — Es un crayón." },
+      { titulo: "How many...?", en: "How many pencils? — Three.", es: "¿Cuántos lápices? — Tres." },
+      { titulo: "What color is it?", en: "What color is it? — It's yellow.", es: "¿De qué color es? — Es amarillo." }
+    ],
+    listening: "Look! This is my classroom. I see a board, a computer, a table and a clock. Is it a pencil? Yes, it is. It's a yellow pencil. Is it a crayon? No, it isn't. It's a pen. How many pencils? Three. What color is the frog? It's green.",
+    reading: {
+      titulo: "Drawing and Writing",
+      texto: "In the past, people draw on a wall with a hand and a stick. Now, we draw with a crayon and paint. We write with a pencil on a tablet. I draw on paper. I write with a pencil. I listen. I talk. I read. I write. Work hard in school!"
+    },
+    ejercicios: [
+      { pregunta: "¿Cómo se dice 'Un libro'?", opciones: ["A pen", "A book", "A chair"], correcta: 1 },
+      { pregunta: "¿Qué significa 'A pencil'?", opciones: ["Un borrador", "Un lápiz", "Una mesa"], correcta: 1 },
+      { pregunta: "¿Cuál es 'Un reloj'?", opciones: ["A clock", "A map", "A board"], correcta: 0 },
+      { pregunta: "¿Cómo se dice 'Es un crayón'?", opciones: ["It's a crayon", "It's a pen", "It's a book"], correcta: 0 }
+    ]
+  },
+  {
+    id: 2,
+    titulo: "My World",
+    emoji: "🌍",
+    desc: "La naturaleza: cielo, sol, montañas y animales.",
+    color: "#27ae60",
+    vocab: [
+      { emoji: "☁️", en: "The sky", es: "El cielo" },
+      { emoji: "☀️", en: "The sun", es: "El sol" },
+      { emoji: "🌙", en: "The moon", es: "La luna" },
+      { emoji: "🌊", en: "The ocean", es: "El océano" },
+      { emoji: "⛰️", en: "A mountain", es: "Una montaña" },
+      { emoji: "🌳", en: "A tree", es: "Un árbol" },
+      { emoji: "🌿", en: "Grass", es: "El pasto" },
+      { emoji: "🏞️", en: "A river", es: "Un río" },
+      { emoji: "🪨", en: "A rock", es: "Una roca" },
+      { emoji: "🐦", en: "A bird", es: "Un pájaro" },
+      { emoji: "🦋", en: "A butterfly", es: "Una mariposa" },
+      { emoji: "⭐", en: "A star", es: "Una estrella" },
+      { emoji: "☁️", en: "A cloud", es: "Una nube" },
+      { emoji: "🌸", en: "A flower", es: "Una flor" },
+      { emoji: "🌳", en: "A bush", es: "Un arbusto" }
+    ],
+    grammar: [
+      { titulo: "What is it? / What are they?", en: "What is it? — It's a bird. What are they? — They're birds.", es: "¿Qué es? — Es un pájaro. ¿Qué son? — Son pájaros." },
+      { titulo: "Where is/are...?", en: "Where is the butterfly? — It's on the flower.", es: "¿Dónde está la mariposa? — Está en la flor." },
+      { titulo: "In / On", en: "Where are the clouds? — They're in the sky.", es: "¿Dónde están las nubes? — Están en el cielo." }
+    ],
+    listening: "Where are the birds? They're in the sky. Where are the sun and the moon? They're in the sky. The sky is part of our world. Where are the fish? They're in the ocean. Where are the trees? They're in the mountains. What colors do you see in our beautiful world?",
+    reading: {
+      titulo: "Rainbows",
+      texto: "Look! A rainbow! The rainbow is in the sky. A rainbow is red, orange, yellow, green, blue, indigo and violet. Do you enjoy nature? Stop and look around you! The birds are in the sky. The flowers are in the grass. The butterflies are on the flowers. What a beautiful world!"
+    },
+    ejercicios: [
+      { pregunta: "¿Cómo se dice 'El sol'?", opciones: ["The moon", "The sun", "The sky"], correcta: 1 },
+      { pregunta: "¿Qué significa 'A butterfly'?", opciones: ["Una mariposa", "Un pájaro", "Una nube"], correcta: 0 },
+      { pregunta: "¿Dónde están las nubes?", opciones: ["In the ocean", "In the sky", "On the flower"], correcta: 1 },
+      { pregunta: "¿Cuál es 'Una montaña'?", opciones: ["A river", "A mountain", "A rock"], correcta: 1 }
+    ]
+  },
+  {
+    id: 3,
+    titulo: "My Family",
+    emoji: "👨‍👩‍👧",
+    desc: "Miembros de la familia y adjetivos.",
+    color: "#e74c3c",
+    vocab: [
+      { emoji: "👩", en: "Mother", es: "Madre" },
+      { emoji: "👨", en: "Father", es: "Padre" },
+      { emoji: "👫", en: "Parents", es: "Padres" },
+      { emoji: "👧", en: "Sister", es: "Hermana" },
+      { emoji: "👦", en: "Brother", es: "Hermano" },
+      { emoji: "👵", en: "Grandmother", es: "Abuela" },
+      { emoji: "👴", en: "Grandfather", es: "Abuelo" },
+      { emoji: "👶", en: "Baby", es: "Bebé" },
+      { emoji: "🖼️", en: "A photo", es: "Una foto" },
+      { emoji: "🧑", en: "Young", es: "Joven" },
+      { emoji: "👴", en: "Old", es: "Mayor" },
+      { emoji: "📏", en: "Tall", es: "Alto" },
+      { emoji: "📐", en: "Short", es: "Bajo" },
+      { emoji: "🤏", en: "Small", es: "Pequeño" },
+      { emoji: "🐘", en: "Big", es: "Grande" }
+    ],
+    grammar: [
+      { titulo: "Who's she/he?", en: "Who's she? — She's my sister. Who's he? — He's my grandpa.", es: "¿Quién es ella? — Es mi hermana. ¿Quién es él? — Es mi abuelo." },
+      { titulo: "How many...?", en: "How many brothers do you have? — I have one brother.", es: "¿Cuántos hermanos tienes? — Tengo un hermano." }
+    ],
+    listening: "Do you have a big family? Yes, my family is big! Some are short and some are tall. I have a big family and I love them all! How many people are in your family? Two, three, four, five or more? There are six people in my family.",
+    reading: {
+      titulo: "Families Are Different",
+      texto: "This family from Turkey is small. There are parents and a girl. This family from Mexico is big. There is a grandfather, a grandmother, a father, and a mother. There are four brothers and one sister. Love your family. Work and play together."
+    },
+    ejercicios: [
+      { pregunta: "¿Cómo se dice 'Madre'?", opciones: ["Father", "Mother", "Sister"], correcta: 1 },
+      { pregunta: "¿Qué significa 'Brother'?", opciones: ["Hermana", "Hermano", "Abuelo"], correcta: 1 },
+      { pregunta: "¿Cuál es 'Abuela'?", opciones: ["Grandfather", "Grandmother", "Baby"], correcta: 1 },
+      { pregunta: "¿Cómo se dice 'Grande'?", opciones: ["Small", "Tall", "Big"], correcta: 2 }
+    ]
+  },
+  {
+    id: 4,
+    titulo: "My House",
+    emoji: "🏠",
+    desc: "Cuartos de la casa y acciones.",
+    color: "#f39c12",
+    vocab: [
+      { emoji: "🛏️", en: "A bedroom", es: "Un dormitorio" },
+      { emoji: "🛌", en: "A bed", es: "Una cama" },
+      { emoji: "🍽️", en: "A dining room", es: "Un comedor" },
+      { emoji: "🍳", en: "A kitchen", es: "Una cocina" },
+      { emoji: "🛋️", en: "A living room", es: "Una sala" },
+      { emoji: "💡", en: "A lamp", es: "Una lámpara" },
+      { emoji: "🛋️", en: "A sofa", es: "Un sofá" },
+      { emoji: "🚿", en: "A bathroom", es: "Un baño" },
+      { emoji: "🌳", en: "A backyard", es: "Un patio" }
+    ],
+    grammar: [
+      { titulo: "Is there...?", en: "Is there a table in the dining room? — Yes, there is. / No, there isn't.", es: "¿Hay una mesa en el comedor? — Sí. / No." },
+      { titulo: "Verbs with -ing", en: "What's he doing? — He's sleeping. What's she doing? — She's eating.", es: "¿Qué está haciendo él? — Está durmiendo. ¿Qué está haciendo ella? — Está comiendo." }
+    ],
+    listening: "Where do you live? I live in an apartment. Where do you sleep? I sleep in the bedroom. Is there a bed? Yes, there is. Where do you eat? I eat in the kitchen. Where do you play? I play in the backyard. Is there a ball? Yes, there is.",
+    reading: {
+      titulo: "Houses Are Different",
+      texto: "Most houses have kitchens, living rooms, and bedrooms inside, but the outside of houses can be very different. Some houses are on the water. Some are round, some are square. Be neat. Clean your room!"
+    },
+    ejercicios: [
+      { pregunta: "¿Cómo se dice 'Una cocina'?", opciones: ["A bedroom", "A kitchen", "A living room"], correcta: 1 },
+      { pregunta: "¿Qué significa 'A sofa'?", opciones: ["Un sofá", "Una cama", "Una lámpara"], correcta: 0 },
+      { pregunta: "¿Cuál es 'Un baño'?", opciones: ["A backyard", "A bathroom", "A dining room"], correcta: 1 },
+      { pregunta: "¿Qué está haciendo él? 'He's sleeping'", opciones: ["Está comiendo", "Está durmiendo", "Está corriendo"], correcta: 1 }
+    ]
+  },
+  {
+    id: 5,
+    titulo: "Cool Clothes",
+    emoji: "👕",
+    desc: "Ropa, colores y qué llevas puesto.",
+    color: "#9b59b6",
+    vocab: [
+      { emoji: "🎩", en: "A hat", es: "Un sombrero" },
+      { emoji: "🧤", en: "Gloves", es: "Guantes" },
+      { emoji: "👗", en: "A skirt", es: "Una falda" },
+      { emoji: "👗", en: "A dress", es: "Un vestido" },
+      { emoji: "👖", en: "Pants", es: "Pantalones" },
+      { emoji: "👔", en: "A shirt", es: "Una camisa" },
+      { emoji: "🧥", en: "A jacket", es: "Una chaqueta" },
+      { emoji: "👕", en: "A T-shirt", es: "Una camiseta" },
+      { emoji: "🧦", en: "Socks", es: "Calcetines" },
+      { emoji: "👟", en: "Shoes", es: "Zapatos" }
+    ],
+    grammar: [
+      { titulo: "What are you wearing?", en: "What are you wearing? — I'm wearing a blue T-shirt.", es: "¿Qué llevas puesto? — Llevo una camiseta azul." },
+      { titulo: "What's that? / What are those?", en: "What's that? — That's my orange T-shirt. What are those? — Those are my purple shoes.", es: "¿Qué es eso? — Es mi camiseta naranja. ¿Qué son esos? — Son mis zapatos morados." }
+    ],
+    listening: "What are you wearing? I'm wearing my brown shoes and I really like them. What are you wearing? I'm wearing my purple pants and I really like them. What are you wearing? I'm wearing my orange shirt and I really like it. Oh, you look nice!",
+    reading: {
+      titulo: "Clothes Are Fun!",
+      texto: "People all over the world wear special clothes on special days. Look at the girls and boys from Korea, Turkey, and Mexico. They are wearing clothes from the past. Take care of your clothes. Put away your clothes."
+    },
+    ejercicios: [
+      { pregunta: "¿Cómo se dice 'Un sombrero'?", opciones: ["A hat", "A jacket", "Socks"], correcta: 0 },
+      { pregunta: "¿Qué significa 'Shoes'?", opciones: ["Calcetines", "Zapatos", "Guantes"], correcta: 1 },
+      { pregunta: "¿Cuál es 'Una camiseta'?", opciones: ["A shirt", "A T-shirt", "A dress"], correcta: 1 },
+      { pregunta: "¿Cómo se dice '¿Qué llevas puesto?'", opciones: ["What's that?", "What are you wearing?", "What color is it?"], correcta: 1 }
+    ]
+  },
+  {
+    id: 6,
+    titulo: "My Toys",
+    emoji: "🧸",
+    desc: "Juguetes y lo que quieres.",
+    color: "#16a085",
+    vocab: [
+      { emoji: "🚂", en: "A train", es: "Un tren" },
+      { emoji: "🥁", en: "A drum", es: "Un tambor" },
+      { emoji: "⚽", en: "A ball", es: "Una pelota" },
+      { emoji: "🚲", en: "A bike", es: "Una bicicleta" },
+      { emoji: "🚚", en: "A truck", es: "Un camión" },
+      { emoji: "🏎️", en: "A car", es: "Un carro" },
+      { emoji: "🎮", en: "A game", es: "Un juego" },
+      { emoji: "🪁", en: "A kite", es: "Una cometa" },
+      { emoji: "🌀", en: "A top", es: "Un trompo" },
+      { emoji: "🐸", en: "A puppet", es: "Un títere" },
+      { emoji: "🤖", en: "A robot", es: "Un robot" },
+      { emoji: "🧸", en: "A teddy bear", es: "Un osito de peluche" },
+      { emoji: "🧩", en: "A puzzle", es: "Un rompecabezas" },
+      { emoji: "🎲", en: "A board game", es: "Un juego de mesa" },
+      { emoji: "🪆", en: "A doll", es: "Una muñeca" }
+    ],
+    grammar: [
+      { titulo: "Do you want...?", en: "Do you want a kite? — No, I don't. I want a ball.", es: "¿Quieres una cometa? — No. Quiero una pelota." },
+      { titulo: "Does she/he want...?", en: "Does she want a ball? — Yes, she does. Does he want a ball? — No, he doesn't.", es: "¿Ella quiere una pelota? — Sí. ¿Él quiere una pelota? — No." },
+      { titulo: "Is this your...?", en: "Is this your teddy bear? — No, it isn't. It's Sonia's teddy bear.", es: "¿Es tu osito? — No. Es el osito de Sonia." }
+    ],
+    listening: "Do you want to play? Do you want to play with me? Do you want to bang on a drum? No, I don't. Do you want to ride a bike? No, I don't. Do you want to fly a kite? Yes, I do. I want to fly my kite with you!",
+    reading: {
+      titulo: "We Love Teddy Bears",
+      texto: "People around the world love teddy bears. Children play and sleep with them. There are even teddy bear museums! This museum is in Scotland. It has big and small bears, girl bears, and boy bears. There are bears for everyone! Share your toys with your friends."
+    },
+    ejercicios: [
+      { pregunta: "¿Cómo se dice 'Un tren'?", opciones: ["A train", "A truck", "A car"], correcta: 0 },
+      { pregunta: "¿Qué significa 'A kite'?", opciones: ["Un trompo", "Una cometa", "Un robot"], correcta: 1 },
+      { pregunta: "¿Cuál es 'Un osito de peluche'?", opciones: ["A doll", "A teddy bear", "A robot"], correcta: 1 },
+      { pregunta: "¿Cómo se dice '¿Quieres una pelota?'", opciones: ["Do you want a ball?", "Does she want a ball?", "Is this your ball?"], correcta: 0 }
+    ]
+  },
+  {
+    id: 7,
+    titulo: "My Body",
+    emoji: "🦵",
+    desc: "Partes del cuerpo y habilidades.",
+    color: "#e67e22",
+    vocab: [
+      { emoji: "🦶", en: "A foot", es: "Un pie" },
+      { emoji: "🦵", en: "A leg", es: "Una pierna" },
+      { emoji: "🗣️", en: "A head", es: "Una cabeza" },
+      { emoji: "✋", en: "A hand", es: "Una mano" },
+      { emoji: "💪", en: "An arm", es: "Un brazo" },
+      { emoji: "👁️", en: "An eye", es: "Un ojo" },
+      { emoji: "👂", en: "An ear", es: "Una oreja" },
+      { emoji: "👃", en: "A nose", es: "Una nariz" },
+      { emoji: "👄", en: "A mouth", es: "Una boca" },
+      { emoji: "🧣", en: "A neck", es: "Un cuello" },
+      { emoji: "💇", en: "Hair", es: "Cabello" }
+    ],
+    grammar: [
+      { titulo: "Possessive adjectives", en: "My hair is brown. Your hair is brown. His hair is brown. Her hair is brown.", es: "Mi cabello es café. Tu cabello es café. Su cabello (de él) es café. Su cabello (de ella) es café." },
+      { titulo: "Ability with CAN", en: "I can walk. Can you run? — Yes, I can. She can jump.", es: "Puedo caminar. ¿Puedes correr? — Sí. Ella puede saltar." }
+    ],
+    listening: "My body, my body! It's fun to move my body! Legs, legs. Move your legs. Feet, feet. Move your feet. Mouth, mouth. Move your mouth. Hands, hands. Move your hands. Can you dance with me?",
+    reading: {
+      titulo: "Sculptures Are Fun",
+      texto: "Some artists draw and paint. Some artists make sculptures. They make people and animals. Look at the man with a hat. His arms and legs are big. His horse's head is small. Look at the balloon dog. Its legs are big. Its ears are long. Artists can make many fun things!"
+    },
+    ejercicios: [
+      { pregunta: "¿Cómo se dice 'Una mano'?", opciones: ["A foot", "A hand", "An arm"], correcta: 1 },
+      { pregunta: "¿Qué significa 'An eye'?", opciones: ["Una oreja", "Un ojo", "Una nariz"], correcta: 1 },
+      { pregunta: "¿Cuál es 'Una boca'?", opciones: ["A nose", "A mouth", "A neck"], correcta: 1 },
+      { pregunta: "¿Cómo se dice 'Puedo caminar'?", opciones: ["I can walk", "I can run", "I can jump"], correcta: 0 }
+    ]
+  },
+  {
+    id: 8,
+    titulo: "Good Food",
+    emoji: "🍎",
+    desc: "Comidas, bebidas y lo que te gusta.",
+    color: "#c0392b",
+    vocab: [
+      { emoji: "🍌", en: "A banana", es: "Un plátano" },
+      { emoji: "🍎", en: "An apple", es: "Una manzana" },
+      { emoji: "🍊", en: "An orange", es: "Una naranja" },
+      { emoji: "🍕", en: "Cheese pizza", es: "Pizza de queso" },
+      { emoji: "🥗", en: "A salad", es: "Una ensalada" },
+      { emoji: "🍚", en: "Rice", es: "Arroz" },
+      { emoji: "🍲", en: "Soup", es: "Sopa" },
+      { emoji: "🥪", en: "A sandwich", es: "Un sándwich" },
+      { emoji: "🍗", en: "Chicken", es: "Pollo" },
+      { emoji: "🐟", en: "Fish", es: "Pescado" },
+      { emoji: "🍪", en: "A cookie", es: "Una galleta" },
+      { emoji: "🥚", en: "An egg", es: "Un huevo" },
+      { emoji: "🍵", en: "Tea", es: "Té" },
+      { emoji: "🧃", en: "Orange juice", es: "Jugo de naranja" },
+      { emoji: "💧", en: "Water", es: "Agua" },
+      { emoji: "🍋", en: "Lemonade", es: "Limonada" },
+      { emoji: "🥛", en: "Milk", es: "Leche" }
+    ],
+    grammar: [
+      { titulo: "Do you like...?", en: "Do you like apples? — No, I don't. Do you like bananas? — Yes, I do.", es: "¿Te gustan las manzanas? — No. ¿Te gustan los plátanos? — Sí." },
+      { titulo: "A / An", en: "An apple, an egg, an orange. A banana, a cookie, a sandwich.", es: "Se usa 'an' antes de sonido vocal, 'a' antes de consonante." }
+    ],
+    listening: "Pizza? I like pizza! Yes, I do! I like it very much! Apples? I like apples! Oranges? I like oranges! Do you want a cookie? Do you want some cheese? Do you want a banana? Yes, please!",
+    reading: {
+      titulo: "Fun Food",
+      texto: "Every day people eat food. Some people play with food! They make pictures of people or animals from fruits and vegetables. Some make sculptures. Many people like to make animal sculptures. These are all examples of fun food. Just don't eat them! Eat good food. Eat fruits and vegetables. Drink enough water."
+    },
+    ejercicios: [
+      { pregunta: "¿Cómo se dice 'Una manzana'?", opciones: ["A banana", "An apple", "An orange"], correcta: 1 },
+      { pregunta: "¿Qué significa 'Chicken'?", opciones: ["Pescado", "Pollo", "Arroz"], correcta: 1 },
+      { pregunta: "¿Cuál es 'Agua'?", opciones: ["Milk", "Water", "Tea"], correcta: 1 },
+      { pregunta: "¿Cómo se dice 'Me gustan los plátanos'?", opciones: ["I like bananas", "I don't like bananas", "Do you like bananas?"], correcta: 0 }
+    ]
+  },
+  {
+    id: 9,
+    titulo: "Animal Friends",
+    emoji: "🐾",
+    desc: "Animales, acciones y bebés animales.",
+    color: "#8e44ad",
+    vocab: [
+      { emoji: "🐢", en: "A turtle", es: "Una tortuga" },
+      { emoji: "🐱", en: "A cat", es: "Un gato" },
+      { emoji: "🐸", en: "A frog", es: "Una rana" },
+      { emoji: "🐰", en: "A rabbit", es: "Un conejo" },
+      { emoji: "🐑", en: "A sheep", es: "Una oveja" },
+      { emoji: "🐶", en: "A dog", es: "Un perro" },
+      { emoji: "🐴", en: "A horse", es: "Un caballo" },
+      { emoji: "🐐", en: "A goat", es: "Una cabra" },
+      { emoji: "🐄", en: "A cow", es: "Una vaca" },
+      { emoji: "🐔", en: "A chicken", es: "Una gallina" },
+      { emoji: "🦆", en: "A duck", es: "Un pato" },
+      { emoji: "🫏", en: "A donkey", es: "Un burro" },
+      { emoji: "🧗", en: "Climb", es: "Trepar" },
+      { emoji: "🦅", en: "Fly", es: "Volar" },
+      { emoji: "🏊", en: "Swim", es: "Nadar" },
+      { emoji: "🐛", en: "Crawl", es: "Arrastrarse" },
+      { emoji: "👀", en: "See", es: "Ver" }
+    ],
+    grammar: [
+      { titulo: "What are they doing?", en: "What are the horses doing? — They're running. Are they sleeping? — No, they aren't.", es: "¿Qué están haciendo los caballos? — Están corriendo. ¿Están durmiendo? — No." },
+      { titulo: "Present progressive", en: "The birds are flying. The cat is climbing. The turtle is crawling.", es: "Los pájaros están volando. El gato está trepando. La tortuga está arrastrándose." }
+    ],
+    listening: "I see animals. What are they doing? I see one dog. Is it running? Yes, it's running. It's running in the sun. What do you see? I see two cats. Are they climbing? Yes, they're climbing. Running and climbing, hopping and singing. These are things we like to do!",
+    reading: {
+      titulo: "Animal Babies",
+      texto: "Who loves babies? Everyone! Let's learn about some animals and their babies. Cats have many baby cats, called kittens. Baby dogs are called puppies. Baby chickens are called chicks. Baby rabbits are called bunnies. Baby sheep are called lambs. A baby elephant is called a calf. Everyone loves animal babies! Be good to animals. Give your pet food and water."
+    },
+    ejercicios: [
+      { pregunta: "¿Cómo se dice 'Un perro'?", opciones: ["A cat", "A dog", "A horse"], correcta: 1 },
+      { pregunta: "¿Qué significa 'A turtle'?", opciones: ["Una tortuga", "Una rana", "Una oveja"], correcta: 0 },
+      { pregunta: "¿Cuál es 'Volar'?", opciones: ["Swim", "Fly", "Climb"], correcta: 1 },
+      { pregunta: "¿Cómo se dice 'Los pájaros están volando'?", opciones: ["The birds are flying", "The cats are climbing", "The dogs are running"], correcta: 0 }
+    ]
+  }
+];
+
+/* =====================================================
+   LÓGICA DE LA APP
+   ===================================================== */
+let xpActual = 0;
+let nivelActual = 1;
+let unidadActual = null;
+let actividadActual = 0;
+
+// Renderizar grid de unidades
+function renderGrid() {
+  const grid = document.getElementById('gridUnidades');
+  grid.innerHTML = UNIDADES.map((u, i) => `
+    <div class="unidad-card" onclick="abrirUnidad(${i}, null)">
+      <span class="num">Unit ${u.id}</span>
+      <span class="unidad-icon">${u.emoji}</span>
+      <h3>${u.titulo}</h3>
+      <p>${u.desc}</p>
+      <span class="unidad-badge">${u.vocab.length} palabras</span>
+    </div>
+  `).join('');
+}
+
+// Mostrar inicio
+function mostrarInicio(btn) {
+  document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  document.getElementById('vistaInicio').classList.add('activa');
+  document.getElementById('vistaUnidad').classList.remove('activa');
+  document.getElementById('tituloTop').textContent = '¡Hola, pequeño explorador! 🌟';
+  document.getElementById('subtituloTop').textContent = 'Aprende inglés jugando con Picken-Glish Kids';
+}
+
+// Abrir una unidad
+function abrirUnidad(index, btn) {
+  if (btn) {
+    document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  unidadActual = UNIDADES[index];
+  actividadActual = 0;
+
+  document.getElementById('vistaInicio').classList.remove('activa');
+  const vista = document.getElementById('vistaUnidad');
+  vista.classList.add('activa');
+  document.getElementById('tituloTop').textContent = `Unit ${unidadActual.id} · ${unidadActual.titulo} ${unidadActual.emoji}`;
+  document.getElementById('subtituloTop').textContent = unidadActual.desc;
+
+  vista.innerHTML = `
+    <button class="volver-btn" onclick="mostrarInicio(null)">← Volver al inicio</button>
+
+    <div class="tabs-actividades">
+      <button class="tab-btn active" onclick="cambiarTab(0, this)">📚 Vocabulario</button>
+      <button class="tab-btn" onclick="cambiarTab(1, this)">📝 Gramática</button>
+      <button class="tab-btn" onclick="cambiarTab(2, this)">🎧 Listening</button>
+      <button class="tab-btn" onclick="cambiarTab(3, this)">📖 Reading</button>
+      <button class="tab-btn" onclick="cambiarTab(4, this)">🎯 Ejercicios</button>
+    </div>
+
+    <div id="panelContenido"></div>
+  `;
+  renderPanel(0);
+}
+
+// Cambiar tab
+function cambiarTab(idx, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  actividadActual = idx;
+  renderPanel(idx);
+}
+
+// Renderizar panel según actividad
+function renderPanel(idx) {
+  const panel = document.getElementById('panelContenido');
+  const u = unidadActual;
+
+  if (idx === 0) {
+    // VOCABULARIO
+    panel.innerHTML = `
+      <div class="panel-actividad activa">
+        <h2 style="font-family:'Baloo 2';color:var(--azul-oscuro);margin-bottom:8px;">📚 Vocabulario</h2>
+        <p style="color:#7f8c8d;margin-bottom:20px;">Haz clic en cada tarjeta para escuchar la pronunciación 🔊</p>
+        <div class="grid-vocab">
+          ${u.vocab.map(v => `
+            <div class="vocab-card" onclick="hablar('${v.en}')">
+              <div class="audio-indicator">🔊</div>
+              <span class="vocab-emoji">${v.emoji}</span>
+              <div class="vocab-palabra">${v.en}</div>
+              <div class="vocab-traduccion">${v.es}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  } else if (idx === 1) {
+    // GRAMÁTICA
+    panel.innerHTML = `
+      <div class="panel-actividad activa">
+        <h2 style="font-family:'Baloo 2';color:var(--azul-oscuro);margin-bottom:8px;">📝 Gramática</h2>
+        <p style="color:#7f8c8d;margin-bottom:20px;">Aprende las estructuras clave de esta unidad.</p>
+        ${u.grammar.map(g => `
+          <div class="grammar-box">
+            <h3>💡 ${g.titulo}</h3>
+            <div class="grammar-ejemplo" onclick="hablar('${g.en.replace(/'/g, "\\'")}')" style="cursor:pointer;">
+              <span class="en">🔊 ${g.en}</span>
+              <span class="es">${g.es}</span>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  } else if (idx === 2) {
+    // LISTENING
+    panel.innerHTML = `
+      <div class="panel-actividad activa">
+        <h2 style="font-family:'Baloo 2';color:var(--azul-oscuro);margin-bottom:8px;">🎧 Listening</h2>
+        <p style="color:#7f8c8d;margin-bottom:20px;">Escucha con atención y repite en voz alta.</p>
+        <div class="listening-box">
+          <span class="listening-icon" onclick="hablar('${u.listening.replace(/'/g, "\\'")}')">🎧</span>
+          <h3>Audio de la unidad</h3>
+          <p>Presiona el botón para escuchar el audio</p>
+          <button class="play-btn" onclick="hablar('${u.listening.replace(/'/g, "\\'")}')">▶ Reproducir audio</button>
+          <div style="margin-top:20px;padding:18px;background:white;border-radius:12px;text-align:left;font-size:0.95rem;color:#34495e;line-height:1.7;">
+            <strong style="color:var(--azul-oscuro);">📄 Transcripción:</strong><br>
+            ${u.listening}
+          </div>
+        </div>
+      </div>
+    `;
+  } else if (idx === 3) {
+    // READING
+    panel.innerHTML = `
+      <div class="panel-actividad activa">
+        <h2 style="font-family:'Baloo 2';color:var(--azul-oscuro);margin-bottom:8px;">📖 Reading</h2>
+        <p style="color:#7f8c8d;margin-bottom:20px;">Lee el texto y haz clic en las palabras resaltadas para escucharlas.</p>
+        <div class="reading-box">
+          <h3>${u.reading.titulo}</h3>
+          <p>${u.reading.texto}</p>
+          <button class="play-btn" style="margin-top:20px;" onclick="hablar('${u.reading.texto.replace(/'/g, "\\'")}')">▶ Leer en voz alta</button>
+        </div>
+      </div>
+    `;
+  } else if (idx === 4) {
+    // EJERCICIOS
+    panel.innerHTML = `
+      <div class="panel-actividad activa">
+        <h2 style="font-family:'Baloo 2';color:var(--azul-oscuro);margin-bottom:8px;">🎯 Ejercicios</h2>
+        <p style="color:#7f8c8d;margin-bottom:20px;">Responde cada pregunta. ¡Gana XP por cada acierto!</p>
+        ${u.ejercicios.map((e, i) => `
+          <div class="ejercicio-box">
+            <div class="ejercicio-pregunta">❓ ${i+1}. ${e.pregunta}</div>
+            <div class="opciones-grid">
+              ${e.opciones.map((op, j) => `
+                <button class="opcion-btn" onclick="responder(this, ${j === e.correcta})">${op}</button>
+              `).join('')}
+            </div>
+            <div class="feedback"></div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+}
+
+// Responder ejercicio
+function responder(btn, esCorrecta) {
+  const box = btn.closest('.ejercicio-box');
+  const feedback = box.querySelector('.feedback');
+  const botones = box.querySelectorAll('.opcion-btn');
+
+  botones.forEach(b => b.disabled = true);
+
+  if (esCorrecta) {
+    btn.classList.add('correcta');
+    feedback.textContent = '✅ ¡Correcto! +10 XP';
+    feedback.className = 'feedback show ok';
+    sumarXP(10);
+  } else {
+    btn.classList.add('incorrecta');
+    feedback.textContent = '❌ ¡Intenta de nuevo en otra ronda!';
+    feedback.className = 'feedback show err';
+  }
+}
+
+// Sumar XP
+function sumarXP(cantidad) {
+  xpActual += cantidad;
+  document.getElementById('xp').textContent = xpActual;
+  if (xpActual >= nivelActual * 50) {
+    nivelActual++;
+    document.getElementById('nivel').textContent = nivelActual;
+  }
+}
+
+// Hablar (Text to Speech)
+function hablar(texto) {
+  if ('speechSynthesis' in window) {
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(texto);
+    u.lang = 'en-US';
+    u.rate = 0.85;
+    u.pitch = 1.1;
+    speechSynthesis.speak(u);
+  } else {
+    alert('Tu navegador no soporta síntesis de voz 😢');
+  }
+}
+
+/* =====================================================
+   INICIALIZAR
+   ===================================================== */
+renderGrid();
+</script>
+
+</body>
+</html>
